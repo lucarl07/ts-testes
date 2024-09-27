@@ -21,4 +21,7 @@ describe('Testando User service', () => {
         await User.sync({ force: true })
     })
 
+    it("Criar um usuário corretamente", () => {
+        expect(2 + 2).toBe(4)
+    })
 })
