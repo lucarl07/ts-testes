@@ -12,9 +12,8 @@ import * as UserService from './Userservice'
 
 describe('Testando User service', () => {
 
-    let email01 = 'teste@jest.com'
-    let email02 = 'apicom@jest.com'
-    let password = '1234'
+    let emails: string[] = ['teste@jest.com', 'apicom@jest.com']
+    let passwords: string[] = ['123456', 'SouOSegundo', 's0v0t3rc31r0']
 
     //faz a sincronização entre a estrutura do model e o que está no banco de dados
     //se não existir, ele cria, se existir o "force", faz com que ele delete, e cria uma nova
@@ -24,17 +23,17 @@ describe('Testando User service', () => {
     })
 
     it("Deve criar um usuário corretamente", async () => {
-        const newUser = await UserService.createUser(email01, password) as UserInstance
+        const newUser = await UserService.createUser(emails[0], passwords[0]) as UserInstance
 
         expect(newUser).not.toBeInstanceOf(Error)
         expect(newUser).toHaveProperty('id')
-        expect(newUser.email).toBe(email01)
-        expect(newUser.password).not.toBe(password)
+        expect(newUser.email).toBe(emails[0])
+        expect(newUser.password).not.toBe(passwords[0])
     })
 
     it("Não deve conseguir criar um usuário", async () => {
-        const firstUser = await UserService.createUser(email02, 'SouOPrimeiro') as UserInstance
-        const secondUser = await UserService.createUser(email02, 's0v0s3gvnd0') as UserInstance
+        const firstUser = await UserService.createUser(emails[1], passwords[1]) as UserInstance
+        const secondUser = await UserService.createUser(emails[1], passwords[2]) as UserInstance
 
         expect(firstUser).toBeInstanceOf(User)
         expect(secondUser).toBeInstanceOf(Error)
@@ -42,7 +41,7 @@ describe('Testando User service', () => {
     })
 
     it("Deve encontrar um usuário pelo email", async () => {
-        const foundUser = await UserService.findByEmail(email01)
+        const foundUser = await UserService.findByEmail(emails[0])
         
         expect(foundUser).not.toBeNull()
         expect(foundUser).toEqual({
@@ -59,7 +58,7 @@ describe('Testando User service', () => {
         const userPw = user?.password
         expect(userPw).toBeDefined()
 
-        const arePwsEqual = await UserService.matchPassword('SouOPrimeiro', userPw || "")
+        const arePwsEqual = await UserService.matchPassword(passwords[1], userPw || "")
         expect(arePwsEqual).toBeTruthy()
         expect(arePwsEqual).toBe(true)
     })
@@ -72,7 +71,7 @@ describe('Testando User service', () => {
         const userPw = user?.password
         expect(userPw).toBeDefined()
 
-        const arePwsEqual = await UserService.matchPassword('s0v0s3gvnd0', userPw || "")
+        const arePwsEqual = await UserService.matchPassword(passwords[2], userPw || "")
         expect(arePwsEqual).toBeFalsy()
         expect(arePwsEqual).toBe(false)
     })
