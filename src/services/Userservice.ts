@@ -16,7 +16,7 @@ export const createUser = async (email: string, password: string) => {
 }
 
 export const findByEmail = async (email: string) => {
-    return await User.findOne({ where: {email}})
+    return await User.findOne({ where: {email}, raw: true })
 }
 
 export const matchPassword = async (passwordText: string, encrypted: string) => {
@@ -24,5 +24,5 @@ export const matchPassword = async (passwordText: string, encrypted: string) => 
 }
 
 export const all = async () => {
-    return await User.findAll()
+    return await User.findAll({ raw: true })
 }
