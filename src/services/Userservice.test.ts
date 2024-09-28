@@ -63,4 +63,17 @@ describe('Testando User service', () => {
         expect(arePwsEqual).toBeTruthy()
         expect(arePwsEqual).toBe(true)
     })
+
+    
+    it("Não deve combinar com a senha no banco de dados", async () => {
+        const user = await User.findByPk(2, { raw: false })
+        expect(user).toBeInstanceOf(User)
+
+        const userPw = user?.password
+        expect(userPw).toBeDefined()
+
+        const arePwsEqual = await UserService.matchPassword('s0v0s3gvnd0', userPw || "")
+        expect(arePwsEqual).toBeFalsy()
+        expect(arePwsEqual).toBe(false)
+    })
 })
