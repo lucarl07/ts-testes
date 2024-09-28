@@ -5,7 +5,7 @@
   "main": "./src/server.ts",
   "scripts": {
     "test": "set NODE_ENV=test& jest --runInBand",
-    "start-dev": "nodemon -e ts,json src/server.ts"
+    "dev": "nodemon -e ts,json ./src/server.ts"
   },
   "author": "",
   "license": "ISC",
