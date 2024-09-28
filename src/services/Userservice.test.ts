@@ -12,7 +12,8 @@ import * as UserService from './Userservice'
 
 describe('Testando User service', () => {
 
-    let email = 'teste@jest.com'
+    let email01 = 'teste@jest.com'
+    let email02 = 'apicom@jest.com'
     let password = '1234'
 
     //faz a sincronização entre a estrutura do model e o que está no banco de dados
@@ -23,20 +24,20 @@ describe('Testando User service', () => {
     })
 
     it("Deve criar um usuário corretamente", async () => {
-        const newUser = await UserService.createUser(email, password) as UserInstance
+        const newUser = await UserService.createUser(email01, password) as UserInstance
+
         expect(newUser).not.toBeInstanceOf(Error)
         expect(newUser).toHaveProperty('id')
-        expect(newUser.email).toBe(email)
+        expect(newUser.email).toBe(email01)
         expect(newUser.password).not.toBe(password)
     })
 
     it("Não deve conseguir criar um usuário", async () => {
-        // Primeiro usuário:
-        await UserService.createUser(email, 'SouOPrimeiro')
+        const firstUser = await UserService.createUser(email02, 'SouOPrimeiro') as UserInstance
+        const secondUser = await UserService.createUser(email02, 's0v0s3gvnd0') as UserInstance
 
-        // Segundo usuário, com o mesmo e-mail do primeiro:
-        const secondUser = await UserService.createUser(email, 's0v0s3gvnd0')
-
+        expect(firstUser).toBeInstanceOf(User)
         expect(secondUser).toBeInstanceOf(Error)
+        expect(secondUser).not.toBeInstanceOf(User)
     })
 })
