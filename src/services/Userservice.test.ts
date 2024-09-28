@@ -44,8 +44,8 @@ describe('Testando User service', () => {
     it("Deve encontrar um usuário pelo email", async () => {
         const foundUser = await UserService.findByEmail(email01)
         
-        expect(foundUser).toBeInstanceOf(User)
-        expect(foundUser).toMatchObject({
+        expect(foundUser).not.toBeNull()
+        expect(foundUser).toEqual({
             id: expect.any(Number),
             email: expect.any(String),
             password: expect.any(String)
