@@ -76,4 +76,18 @@ describe('Testando User service', () => {
         expect(arePwsEqual).toBeFalsy()
         expect(arePwsEqual).toBe(false)
     })
+
+    it("Deve retornar uma lista de usuários", async () => {
+        const userList = await UserService.all()
+
+        expect(userList).toBeInstanceOf(Array)
+
+        userList.forEach((user) => {
+            expect(user).toEqual({
+                id: expect.any(Number),
+                email: expect.any(String),
+                password: expect.any(String)
+            })
+        })
+    })
 })
