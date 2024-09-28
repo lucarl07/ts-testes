@@ -10,4 +10,6 @@ describe('Testando rotas da API', () => {
     beforeAll(async () => {
         await User.sync({ force: true })
     })
+
+    it.todo("You shall ~~not~~ pass!")
 })
