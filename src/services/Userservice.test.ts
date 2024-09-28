@@ -40,4 +40,27 @@ describe('Testando User service', () => {
         expect(secondUser).toBeInstanceOf(Error)
         expect(secondUser).not.toBeInstanceOf(User)
     })
+
+    it("Deve encontrar um usuário pelo email", async () => {
+        const foundUser = await UserService.findByEmail(email01)
+        
+        expect(foundUser).toBeInstanceOf(User)
+        expect(foundUser).toMatchObject({
+            id: expect.any(Number),
+            email: expect.any(String),
+            password: expect.any(String)
+        });
+    })
+
+    it("Deve combinar com a senha no banco de dados", async () => {
+        const user = await User.findByPk(2, { raw: false })
+        expect(user).toBeInstanceOf(User)
+
+        const userPw = user?.password
+        expect(userPw).toBeDefined()
+
+        const arePwsEqual = await UserService.matchPassword('SouOPrimeiro', userPw || "")
+        expect(arePwsEqual).toBeTruthy()
+        expect(arePwsEqual).toBe(true)
+    })
 })
