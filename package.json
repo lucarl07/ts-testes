@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/server.ts",
-  "type": "module",
   "scripts": {
     "test": "set NODE_ENV=test& jest --runInBand",
     "dev": "nodemon -e ts,json ./src/server.ts"
