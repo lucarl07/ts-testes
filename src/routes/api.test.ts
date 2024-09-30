@@ -2,14 +2,13 @@ import request from 'supertest'
 import app from '../app'
 import { User } from '../models/User'
 
-describe('Testando rotas da API', () => {
-
-    let email = 'test@jest.com'
-    let password = '1234'
-
-    beforeAll(async () => {
-        await User.sync({ force: true })
+describe('GET /ping', () => {
+    it(`Deve responder "pong"`, async () => {
+        const res = await request(app)
+            .get("/ping")
+            .expect(200)
+            .expect("Content-Type", /json/)
+        
+        expect(res.body.pong).toBe(true)
     })
-
-    it.todo("You shall not pass!")
 })
