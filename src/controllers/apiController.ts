@@ -50,7 +50,9 @@ export const list = async (req: Request, res: Response) => {
             list.push(users[i].email);
         }
 
-        return res.status(200).json({ list });
+        let count = list.length
+
+        return res.status(200).json({ count, list });
     } catch (error) {
         console.log(error)
         return res.status(500).json({ 
