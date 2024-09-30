@@ -11,5 +11,5 @@ describe('Testando rotas da API', () => {
         await User.sync({ force: true })
     })
 
-    it.todo("You shall ~~not~~ pass!")
+    it.todo("You shall not pass!")
 })
