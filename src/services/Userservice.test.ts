@@ -15,8 +15,6 @@ describe('Testando User service', () => {
     let emails: string[] = ['teste@jest.com', 'apicom@jest.com']
     let passwords: string[] = ['123456', 'SouOSegundo', 's0v0t3rc31r0']
 
-    //faz a sincronização entre a estrutura do model e o que está no banco de dados
-    //se não existir, ele cria, se existir o "force", faz com que ele delete, e cria uma nova
     beforeAll(async () => {
         await User.sync({ force: true })
         expect(2 + 2).toBe(4)
