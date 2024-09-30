@@ -25,7 +25,7 @@ describe('Testando User service', () => {
     it("Deve criar um usuário corretamente", async () => {
         const newUser = await UserService.createUser(emails[0], passwords[0]) as UserInstance
 
-        expect(newUser).not.toBeInstanceOf(Error)
+        expect(newUser).toBeInstanceOf(User)
         expect(newUser).toHaveProperty('id')
         expect(newUser.email).toBe(emails[0])
         expect(newUser.password).not.toBe(passwords[0])
