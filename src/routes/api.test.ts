@@ -19,7 +19,7 @@ describe('GET /ping', () => {
 
 describe("POST /register", () => {    
     it(`Deve criar um usuário com êxito`, async () => {
-        const email = "testando@rotas.com"
+        const email = "testando01@rotas.com"
         const password = "1q2w3e4r5t"
         const newUser = `email=${email}&password=${password}`;
 
@@ -32,9 +32,32 @@ describe("POST /register", () => {
         expect(response.body).toHaveProperty("id")
     })
 
-    it(`NÃO deve criar um usuário com e-mail já cadastrado`, () => {})
+    it(`NÃO deve criar um usuário com e-mail já cadastrado`, async () => {
+        const email = "testando01@rotas.com"
+        const password = "souBemDiferente"
+        const newUser = `email=${email}&password=${password}`;
 
-    it(`NÃO deve criar um usuário por ausência de dados`, () => {})
+        const response = await request(app) 
+            .post("/register")
+            .send(newUser)
+            .expect(409)
+            .expect('Content-Type', /json/)
+
+        expect(response.body).toHaveProperty("error")
+    })
+
+    it(`NÃO deve criar um usuário por ausência de dados`, async () => {
+        const email = "testando02@rotas.com"
+        const newUser = `email=${email}`;
+
+        const response = await request(app) 
+            .post("/register")
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /json/)
+
+        expect(response.body).toHaveProperty("error")
+    })
 })
 
 describe("POST /login", () => {
