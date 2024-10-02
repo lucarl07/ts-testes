@@ -2,23 +2,27 @@ import request from 'supertest'
 import app from '../app'
 import { User } from '../models/User'
 
+beforeAll(async () => {
+    await User.sync({ force: true })
+})
+
 describe('GET /ping', () => {
     it(`Deve responder "pong"`, async () => {
-        const res = await request(app)
+        const response = await request(app)
             .get("/ping")
             .expect(200)
             .expect("Content-Type", /json/)
         
-        expect(res.body.pong).toBe(true)
+        expect(response.body.pong).toBe(true)
     })
 })
 
-describe("POST /register", () => {
-    it.todo(`Deve criar um usuário com êxito`)
+describe("POST /register", () => {    
+    it(`Deve criar um usuário com êxito`, () => {})
 
-    it.todo(`NÃO deve criar um usuário com e-mail já cadastrado`)
+    it(`NÃO deve criar um usuário com e-mail já cadastrado`, () => {})
 
-    it.todo(`NÃO deve criar um usuário por ausência de dados`)
+    it(`NÃO deve criar um usuário por ausência de dados`, () => {})
 })
 
 describe("POST /login", () => {
