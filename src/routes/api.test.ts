@@ -75,9 +75,32 @@ describe("POST /login", () => {
             })
     })
 
-    it.todo(`NÃO deve acessar a conta por dados não cadastrados`)
+    it(`NÃO deve acessar a conta por dados não cadastrados`, async () => {
+        const email = "queroLogarHoje@email.com"
+        const password = ".!9109128abc"
 
-    it.todo(`NÃO deve acessar a conta por ausência de dados`)
+        await request(app)
+            .post("/login")
+            .send(`email=${email}&password=${password}`)
+            .expect(401)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+                expect(res.body.status).toBe(false)
+            })
+    })
+
+    it(`NÃO deve acessar a conta por ausência de dados`, async () => {
+        const password = "SENHAMUITOSEGURA"
+
+        await request(app)
+            .post("/login")
+            .send(`password=${password}`)
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+                expect(res.body).toHaveProperty('error')
+            })
+    })
 })
 
 describe('GET /list', () => {
