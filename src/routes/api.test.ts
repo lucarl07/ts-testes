@@ -18,7 +18,19 @@ describe('GET /ping', () => {
 })
 
 describe("POST /register", () => {    
-    it(`Deve criar um usuário com êxito`, () => {})
+    it(`Deve criar um usuário com êxito`, async () => {
+        const email = "testando@rotas.com"
+        const password = "1q2w3e4r5t"
+        const newUser = `email=${email}&password=${password}`;
+
+        const response = await request(app) 
+            .post("/register")
+            .send(newUser)
+            .expect(201)
+            .expect('Content-Type', /json/)
+
+        expect(response.body).toHaveProperty("id")
+    })
 
     it(`NÃO deve criar um usuário com e-mail já cadastrado`, () => {})
 
