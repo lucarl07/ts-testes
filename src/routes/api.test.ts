@@ -61,11 +61,23 @@ describe("POST /register", () => {
 })
 
 describe("POST /login", () => {
-    it.todo(`Deve logar no site com êxito`)
+    it(`Deve acessar a conta com êxito`, async () => {
+        const email = "testando01@rotas.com"
+        const password = "1q2w3e4r5t"
 
-    it.todo(`NÃO deve logar no site por dados não cadastrados`)
+        await request(app)
+            .post("/login")
+            .send(`email=${email}&password=${password}`)
+            .expect(201)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+                expect(res.body.status).toBe(true)
+            })
+    })
 
-    it.todo(`NÃO deve logar no site por ausência de dados`)
+    it.todo(`NÃO deve acessar a conta por dados não cadastrados`)
+
+    it.todo(`NÃO deve acessar a conta por ausência de dados`)
 })
 
 describe('GET /list', () => {
