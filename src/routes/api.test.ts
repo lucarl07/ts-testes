@@ -60,7 +60,7 @@ describe("POST /register", () => {
     })
 })
 
-describe("POST /login", () => {
+describe("POST /login", () => { // No momento, deve ser sempre executado após os testes de /POST register
     it(`Deve acessar a conta com êxito`, async () => {
         const email = "testando01@rotas.com"
         const password = "1q2w3e4r5t"
