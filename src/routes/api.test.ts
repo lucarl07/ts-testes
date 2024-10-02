@@ -13,6 +13,22 @@ describe('GET /ping', () => {
     })
 })
 
+describe("POST /register", () => {
+    it.todo(`Deve criar um usuário com êxito`)
+
+    it.todo(`NÃO deve criar um usuário com e-mail já cadastrado`)
+
+    it.todo(`NÃO deve criar um usuário por ausência de dados`)
+})
+
+describe("POST /login", () => {
+    it.todo(`Deve logar no site com êxito`)
+
+    it.todo(`NÃO deve logar no site por dados não cadastrados`)
+
+    it.todo(`NÃO deve logar no site por ausência de dados`)
+})
+
 describe('GET /list', () => {
     it(`Deve retornar um objeto com propriedades "list" e "count"`, async () => {
         const res = await request(app)
