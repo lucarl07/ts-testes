@@ -84,4 +84,8 @@ describe('Testando User service', () => {
             })
         })
     })
+
+    it("Deve remover um usuário já criado", () => {})
+
+    it("Deve falhar em remover um usuário", () => {})
 })
