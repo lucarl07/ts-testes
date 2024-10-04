@@ -5,11 +5,10 @@ import db from './databases'
 dotenv.config();
 
 export const sequelize = new Sequelize(
-    db.db,
-    db.user,
-    db.password,
+    db.db, db.user, db.password,
     {
         dialect: 'mysql',
-        port: parseInt(db.port)
+        port: parseInt(db.port),
+        logging: false
     }
 );
