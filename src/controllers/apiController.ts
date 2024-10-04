@@ -60,3 +60,23 @@ export const list = async (req: Request, res: Response) => {
         });
     }
 }
+
+export const _delete = async (req: Request, res: Response) => {
+    if (req.params.user_email) {
+        const { userEmail } = req.params
+
+        const tryDeletingUser = await UserService.deleteUser(userEmail)
+
+        if (tryDeletingUser) {
+            return res.status(200).json({ 
+                message: "Usuário removido com sucesso."
+            })
+        } else {
+            return res.status(404).json({ 
+                message: "O usuário não foi encontrado."
+            })
+        }
+    }
+
+    res.status(400).json({ message: "O e-mail é obrigatório." })
+}

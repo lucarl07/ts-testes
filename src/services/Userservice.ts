@@ -26,3 +26,17 @@ export const matchPassword = async (passwordText: string, encrypted: string) => 
 export const all = async () => {
     return await User.findAll({ raw: true })
 }
+
+export const deleteUser = async (email: string) => {
+    try {
+        const deletedUser = await User.destroy({ where: { email } })
+
+        if (deletedUser) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        throw new Error("Erro ao excluir o usuário.")
+    }
+}
