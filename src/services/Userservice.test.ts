@@ -85,7 +85,23 @@ describe('Testando User service', () => {
         })
     })
 
-    it("Deve remover um usuário já criado", () => {})
+    it("Deve remover um usuário já criado", async () => {
+        const wasUserDeleted = await UserService.deleteUser(emails[1])
+        const searchDeletedUser = await User.findOne({ 
+            where: { email: emails[1] } 
+        })
 
-    it("Deve falhar em remover um usuário", () => {})
+        expect(wasUserDeleted).toBe(true)
+        expect(searchDeletedUser).toBeNull()
+    })
+
+    it("Deve falhar em remover um usuário inexistente", async () => {
+        const wasUserDeleted = await UserService.deleteUser("NAOEXISTO@email.com")
+        const searchDeletedUser = await User.findOne({ 
+            where: { email: emails[1] } 
+        })
+
+        expect(wasUserDeleted).toBe(false)
+        expect(searchDeletedUser).toBeNull()
+    })
 })
