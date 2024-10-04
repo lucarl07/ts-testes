@@ -62,7 +62,7 @@ export const list = async (req: Request, res: Response) => {
 }
 
 export const _delete = async (req: Request, res: Response) => {
-    if (req.params.user_email) {
+    if (req.params.userEmail) {
         const { userEmail } = req.params
 
         const tryDeletingUser = await UserService.deleteUser(userEmail)
