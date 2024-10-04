@@ -140,3 +140,29 @@ describe('GET /list', () => {
         })
     })
 })
+
+describe('DELETE /delete/:userEmail', () => {
+    it('Deve remover um usuário já criado', async () => {
+        const email = "testando01@rotas.com"
+
+        const response = await request(app)
+            .delete(`/delete/${email}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+                expect(res.body.message).toMatch(/sucesso/)
+            })
+    })
+
+    it('Deve falhar em remover um usuário inexistente', async () => {
+        const email = "testando02@rotas.com"
+
+        const response = await request(app)
+            .delete(`/delete/${email}`)
+            .expect(404)
+            .expect('Content-Type', /json/)
+            .then((res) => {
+                expect(res.body.message).toMatch(/não foi encontrado/)
+            })
+    })
+})
