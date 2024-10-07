@@ -8,12 +8,13 @@ beforeAll(async () => {
 
 describe('GET /ping', () => {
     it(`Deve responder "pong"`, async () => {
-        const response = await request(app)
+        await request(app)
             .get("/ping")
             .expect(200)
             .expect("Content-Type", /json/)
-        
-        expect(response.body.pong).toBe(true)
+            .then((res) => {
+                expect(res.body.pong).toBe(true)
+            })
     })
 })
 
@@ -23,13 +24,14 @@ describe("POST /register", () => {
         const password = "1q2w3e4r5t"
         const newUser = `email=${email}&password=${password}`;
 
-        const response = await request(app) 
+        await request(app) 
             .post("/register")
             .send(newUser)
             .expect(201)
             .expect('Content-Type', /json/)
-
-        expect(response.body).toHaveProperty("id")
+            .expect((res) => {
+                expect(res.body).toHaveProperty("id")
+            })
     })
 
     it(`NÃO deve criar um usuário com e-mail já cadastrado`, async () => {
@@ -37,26 +39,28 @@ describe("POST /register", () => {
         const password = "souBemDiferente"
         const newUser = `email=${email}&password=${password}`;
 
-        const response = await request(app) 
+        await request(app) 
             .post("/register")
             .send(newUser)
             .expect(409)
             .expect('Content-Type', /json/)
-
-        expect(response.body).toHaveProperty("error")
+            .then((res) => {
+                expect(res.body).toHaveProperty("error")
+            })
     })
 
     it(`NÃO deve criar um usuário por ausência de dados`, async () => {
         const email = "testando02@rotas.com"
         const newUser = `email=${email}`;
 
-        const response = await request(app) 
+        await request(app) 
             .post("/register")
             .send(newUser)
             .expect(400)
             .expect('Content-Type', /json/)
-
-        expect(response.body).toHaveProperty("error")
+            .then((res) => {
+                expect(res.body).toHaveProperty("error")
+            })
     })
 })
 
@@ -105,39 +109,42 @@ describe("POST /login", () => { // No momento, deve ser sempre executado após o
 
 describe('GET /list', () => {
     it(`Deve retornar um objeto com propriedades "list" e "count"`, async () => {
-        const res = await request(app)
+        await request(app)
             .get("/list")
             .expect(200)
             .expect("Content-Type", /json/)
-
-        expect(res.body).toBeInstanceOf(Object)
-        expect(res.body).toHaveProperty("count")
-        expect(res.body).toHaveProperty("list")
+            .then(({body}) => {
+                expect(body).toBeInstanceOf(Object)
+                expect(body).toHaveProperty("count")
+                expect(body).toHaveProperty("list")
+            })
     })
 
     it(`Deve retornar um número inteiro em "count"`, async () => {
-        const res = await request(app)
+        await request(app)
             .get("/list")
             .expect(200)
             .expect("Content-Type", /json/)
-
-        const count = res.body.count
-
-        expect(count).toBe(Math.floor(count))
+            .then((res) => {
+                const count = res.body.count
+                expect(count).toBe(Math.floor(count))
+            })
     })
 
     it(`Deve retornar uma lista de e-mails válidos em "list"`, async () => {
-        const res = await request(app)
+        const emailRegExp = /^([A-Z0-9_+-]+\.?)*[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i
+        
+        await request(app)
             .get("/list")
             .expect(200)
             .expect("Content-Type", /json/)
+            .then((res) => {
+                const list = res.body.list;
 
-        const list = res.body.list
-        const emailRegExp = /^([A-Z0-9_+-]+\.?)*[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i
-
-        list.forEach((user: string) => {
-            expect(user).toMatch(emailRegExp)
-        })
+                list.forEach((user: string) => {
+                    expect(user).toMatch(emailRegExp)
+                })
+            })
     })
 })
 
@@ -145,7 +152,7 @@ describe('DELETE /delete/:userEmail', () => {
     it('Deve remover um usuário já criado', async () => {
         const email = "testando01@rotas.com"
 
-        const response = await request(app)
+        await request(app)
             .delete(`/delete/${email}`)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -157,7 +164,7 @@ describe('DELETE /delete/:userEmail', () => {
     it('Deve falhar em remover um usuário inexistente', async () => {
         const email = "testando02@rotas.com"
 
-        const response = await request(app)
+        await request(app)
             .delete(`/delete/${email}`)
             .expect(404)
             .expect('Content-Type', /json/)
