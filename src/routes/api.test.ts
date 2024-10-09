@@ -81,7 +81,7 @@ describe("Ao acessar POST /login", () => { // No momento, deve ser sempre execut
   })
 
   it("Não deve logar corretamente", async () => {
-    const email = 'eu.simplesmente.nao.existo@email.com'
+    const email = 'simplesmente.nao.existo@email.com'
     const password = '123456'
 
     await request(app)
@@ -93,6 +93,21 @@ describe("Ao acessar POST /login", () => { // No momento, deve ser sempre execut
       .then((res) => {
         expect(res.body).toHaveProperty('status')
         expect(res.body.status).toBe(false)
+      })
+  })
+})
+
+describe("Ao acessar GET /list", () => {
+  it("Deve listar os usuários", async () => {
+    await request(app)
+      .get('/list')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(({body}) => {
+        expect(body).toHaveProperty('count')
+        expect(body).toHaveProperty('list')
+        expect(body.list).toBeInstanceOf(Array)
+        expect(body.count).toEqual(body.list.length)
       })
   })
 })
