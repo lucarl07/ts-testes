@@ -79,4 +79,20 @@ describe("Ao acessar POST /login", () => { // No momento, deve ser sempre execut
         expect(res.body.status).toBe(true)
       })
   })
+
+  it("Não deve logar corretamente", async () => {
+    const email = 'eu.simplesmente.nao.existo@email.com'
+    const password = '123456'
+
+    await request(app)
+      .post('/login')
+      .send(`email=${email}&password=${password}`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(401)
+      .then((res) => {
+        expect(res.body).toHaveProperty('status')
+        expect(res.body.status).toBe(false)
+      })
+  })
 })
