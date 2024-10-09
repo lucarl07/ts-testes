@@ -111,3 +111,29 @@ describe("Ao acessar GET /list", () => {
       })
   })
 })
+
+describe("Ao acessar DELETE /delete/:userEmail", () => {
+  it("Deve excluir um usuário", async () => {
+    const email = 'umBomEmail@email.com'
+
+    await request(app)
+      .delete(`/delete/${email}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.message).toMatch(/sucesso/)
+      })
+  })
+
+  it("Não deve excluir um usuário", async () => {
+    const email = 'simplesmente.nao.existo@email.com'
+
+    await request(app)
+      .delete(`/delete/${email}`)
+      .expect('Content-Type', /json/)
+      .expect(404)
+      .then((res) => {
+        expect(res.body.message).toMatch(/não foi encontrado/)
+      })
+  })
+})
